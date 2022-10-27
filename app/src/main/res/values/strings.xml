@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">InstagramMvvmArchitecture</string>
+    <string name="likes">%s likes</string>
+    <string name="description">%s %s</string>
+</resources>
