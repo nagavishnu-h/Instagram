@@ -1,8 +1,7 @@
 package rapido.bike.paathshaala.instagrammvvmarchitecture.data.repository
 
-import rapido.bike.paathshaala.instagrammvvmarchitecture.data.apis.ApiService
+import rapido.bike.paathshaala.instagrammvvmarchitecture.data.model.RetrofitBuilder
 
 class FeedRepository {
-    private val apiService = ApiService()
-    suspend fun getFeeds() = apiService.getFeeds()
+    suspend fun getFeeds() = RetrofitBuilder.postService.getFeeds()
 }
