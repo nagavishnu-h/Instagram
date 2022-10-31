@@ -1,4 +1,4 @@
-package rapido.bike.paathshaala.instagrammvvmarchitecture.model
+package rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model
 
 data class PostCard (
     val title: String,

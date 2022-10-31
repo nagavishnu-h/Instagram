@@ -1,18 +1,15 @@
-package rapido.bike.paathshaala.instagrammvvmarchitecture.view
+package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import rapido.bike.paathshaala.instagrammvvmarchitecture.databinding.ActivityMainBinding
-import rapido.bike.paathshaala.instagrammvvmarchitecture.model.PostCard
+import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
 import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
-import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Status.*
-import rapido.bike.paathshaala.instagrammvvmarchitecture.viewmodel.FeedViewModel
+import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.viewmodel.FeedViewModel
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -34,15 +31,13 @@ class MainActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     binding.recyclerView.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
-                    Log.d("Instagram", "Success")
                     retrieveList(it.data)
                 }
                 is Resource.Failure -> {
                     binding.progressBar.visibility = View.GONE
-                    Log.d("Instagram", it.message.toString())
                 }
                 is Resource.Loading -> {
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
                 }
             }
 

@@ -1,4 +1,4 @@
-package rapido.bike.paathshaala.instagrammvvmarchitecture.view
+package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.view
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
 import com.squareup.picasso.Picasso
 import rapido.bike.paathshaala.instagrammvvmarchitecture.R
-import rapido.bike.paathshaala.instagrammvvmarchitecture.model.PostCard
+import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
 
 class PostFeedAdapter(private val context: Context): Adapter<PostFeedAdapter.ViewHolder>() {
     private var postList = ArrayList<PostCard>()

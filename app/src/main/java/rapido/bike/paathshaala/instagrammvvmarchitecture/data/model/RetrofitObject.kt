@@ -1,8 +1,8 @@
-package rapido.bike.paathshaala.instagrammvvmarchitecture.model
+package rapido.bike.paathshaala.instagrammvvmarchitecture.data.model
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import rapido.bike.paathshaala.instagrammvvmarchitecture.apis.FeedPosts
+import rapido.bike.paathshaala.instagrammvvmarchitecture.data.apis.FeedPosts
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
