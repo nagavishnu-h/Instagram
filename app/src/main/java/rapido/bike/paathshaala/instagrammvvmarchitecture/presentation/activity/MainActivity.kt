@@ -1,4 +1,4 @@
-package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.view
+package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import rapido.bike.paathshaala.instagrammvvmarchitecture.databinding.ActivityMainBinding
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
+import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.adapter.PostFeedAdapter
 import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
 import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.viewmodel.FeedViewModel
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

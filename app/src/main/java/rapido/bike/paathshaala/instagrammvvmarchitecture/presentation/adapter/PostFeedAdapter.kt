@@ -1,4 +1,4 @@
-package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.view
+package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
