@@ -1,5 +1,6 @@
 package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +15,12 @@ import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
 
 class PostFeedAdapter(private val context: Context): Adapter<PostFeedAdapter.ViewHolder>() {
     private var postList = ArrayList<PostCard>()
+
     fun setPosts(posts:List<PostCard>){
         postList = posts as ArrayList<PostCard>
         notifyDataSetChanged()
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
             LayoutInflater.from(parent.context)

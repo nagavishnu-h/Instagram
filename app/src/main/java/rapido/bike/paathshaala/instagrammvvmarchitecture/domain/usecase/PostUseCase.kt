@@ -5,9 +5,9 @@ import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
 import rapido.bike.paathshaala.instagrammvvmarchitecture.data.repository.FeedRepository
 import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
 import retrofit2.Response
+import javax.inject.Inject
 
-class PostUseCase {
-    private val feedRepository = FeedRepository()
+class PostUseCase @Inject constructor(private val feedRepository: FeedRepository) {
     suspend fun getFeeds(): Resource<List<PostCard>> {
         val response = feedRepository.getFeeds()
         return if (response.isSuccessful) {

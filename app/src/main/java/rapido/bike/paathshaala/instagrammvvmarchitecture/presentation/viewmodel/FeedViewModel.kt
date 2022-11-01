@@ -5,10 +5,9 @@ import androidx.lifecycle.liveData
 import kotlinx.coroutines.Dispatchers
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.usecase.PostUseCase
 import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
+import javax.inject.Inject
 
-class FeedViewModel() : ViewModel() {
-    private val postUseCase = PostUseCase()
-
+class FeedViewModel @Inject constructor(private val postUseCase: PostUseCase) : ViewModel(){
     fun getFeeds() = liveData(Dispatchers.IO) {
         emit(Resource.Loading(true))
         emit(postUseCase.getFeeds())
