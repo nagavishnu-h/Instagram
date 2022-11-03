@@ -10,7 +10,6 @@ import javax.inject.Singleton
 
 @Module
 class NetworkModule {
-
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient =
