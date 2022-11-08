@@ -2,4 +2,6 @@
     <string name="app_name">InstagramMvvmArchitecture</string>
     <string name="likes">%s likes</string>
     <string name="description">%s %s</string>
+    <string name="notification_title">User Location</string>
+    <string name="notification_message">Fetching Location Details ……</string>
 </resources>

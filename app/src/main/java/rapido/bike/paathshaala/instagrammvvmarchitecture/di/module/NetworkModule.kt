@@ -31,6 +31,6 @@ class NetworkModule {
         .build()
 
     companion object {
-        private const val BASE_URL = "http://192.168.29.194:3000/"
+        private const val BASE_URL = "http://172.16.17.174:3000/"
     }
 }

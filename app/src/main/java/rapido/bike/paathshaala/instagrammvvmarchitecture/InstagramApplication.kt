@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 
 class InstagramApplication : Application(), HasAndroidInjector {
-    lateinit var appComponent : AppComponent
+    private lateinit var appComponent : AppComponent
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>

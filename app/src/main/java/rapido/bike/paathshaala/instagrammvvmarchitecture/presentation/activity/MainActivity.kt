@@ -1,8 +1,11 @@
 package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.AndroidInjection
@@ -10,14 +13,16 @@ import rapido.bike.paathshaala.instagrammvvmarchitecture.databinding.ActivityMai
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.ViewModelFactory
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
 import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.adapter.PostFeedAdapter
-import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
 import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.viewmodel.FeedViewModel
+import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.LocationTrackingService
+import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var feedAdapter: PostFeedAdapter
     private lateinit var viewModel: FeedViewModel
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -29,6 +34,16 @@ class MainActivity : AppCompatActivity() {
         initViewModel()
         setUpUI()
         setUpObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startService(Intent(this, LocationTrackingService::class.java))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(Intent(this, LocationTrackingService::class.java))
     }
 
     private fun initViewModel() {
@@ -64,5 +79,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun retrieveList(feeds: List<PostCard>) {
         feedAdapter.setPosts(feeds)
+    }
+
+    fun requestPermissions() {
+        val permissionId = 42
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+            permissionId
+        )
     }
 }
