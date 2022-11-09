@@ -1,16 +1,14 @@
 package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.android.AndroidInjection
+import dagger.android.support.DaggerAppCompatActivity
 import rapido.bike.paathshaala.instagrammvvmarchitecture.databinding.ActivityMainBinding
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.ViewModelFactory
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
@@ -20,7 +18,7 @@ import rapido.bike.paathshaala.instagrammvvmarchitecture.service.LocationTrackin
 import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var feedAdapter: PostFeedAdapter
     private lateinit var viewModel: FeedViewModel
@@ -29,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
