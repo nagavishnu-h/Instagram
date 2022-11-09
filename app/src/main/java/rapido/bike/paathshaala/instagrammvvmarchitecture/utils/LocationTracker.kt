@@ -22,22 +22,18 @@ object LocationTracker {
     fun getLastLocation(applicationContext: Context) {
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(applicationContext)
-        if (checkPermissions(applicationContext)) {
-            if (isLocationEnabled(applicationContext)) {
-                fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
-                    if (task.isSuccessful && task.result != null) {
-                        Log.d("Instagram LastLocation:", task.result.toString())
-                        latitude = task.result.latitude.toString()
-                        longitude = task.result.longitude.toString()
-                    } else {
-                        Log.w("Instagram", "Failed to get location.")
-                    }
+        if (isLocationEnabled(applicationContext)) {
+            fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
+                if (task.isSuccessful && task.result != null) {
+                    Log.d("Instagram LastLocation:", task.result.toString())
+                    latitude = task.result.latitude.toString()
+                    longitude = task.result.longitude.toString()
+                } else {
+                    Log.w("Instagram", "Failed to get location.")
                 }
-            } else {
-                applicationContext.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             }
         } else {
-            MainActivity().requestPermissions()
+            applicationContext.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         }
     }
 
@@ -78,20 +74,6 @@ object LocationTracker {
                 )
     }
 
-    private fun checkPermissions(applicationContext: Context): Boolean {
-        if (ActivityCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            return true
-        }
-        return false
-    }
 
     fun stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallBack)

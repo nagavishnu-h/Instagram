@@ -1,7 +1,9 @@
 package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -31,10 +33,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        startService(Intent(this, LocationTrackingService::class.java))
+        validateAndStartService()
         initViewModel()
         setUpUI()
         setUpObservers()
+    }
+
+    private fun validateAndStartService() {
+        if(checkPermissions()){
+            startService(Intent(this, LocationTrackingService::class.java))
+        }else{
+            requestPermissions()
+        }
     }
 
     override fun onDestroy() {
@@ -77,7 +87,22 @@ class MainActivity : AppCompatActivity() {
         feedAdapter.setPosts(feeds)
     }
 
-    fun requestPermissions() {
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+
+    private fun requestPermissions() {
         val permissionId = 42
         ActivityCompat.requestPermissions(
             this,
