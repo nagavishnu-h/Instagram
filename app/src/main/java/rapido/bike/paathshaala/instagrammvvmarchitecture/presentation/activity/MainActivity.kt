@@ -14,7 +14,7 @@ import rapido.bike.paathshaala.instagrammvvmarchitecture.di.ViewModelFactory
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
 import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.adapter.PostFeedAdapter
 import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.viewmodel.FeedViewModel
-import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.LocationTrackingService
+import rapido.bike.paathshaala.instagrammvvmarchitecture.service.LocationTrackingService
 import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
 import javax.inject.Inject
 
@@ -31,14 +31,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        startService(Intent(this, LocationTrackingService::class.java))
         initViewModel()
         setUpUI()
         setUpObservers()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        startService(Intent(this, LocationTrackingService::class.java))
     }
 
     override fun onDestroy() {

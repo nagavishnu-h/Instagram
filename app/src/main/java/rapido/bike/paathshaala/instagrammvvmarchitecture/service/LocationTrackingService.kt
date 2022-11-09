@@ -1,4 +1,4 @@
-package rapido.bike.paathshaala.instagrammvvmarchitecture.utils
+package rapido.bike.paathshaala.instagrammvvmarchitecture.service
 
 import android.app.*
 import android.content.Intent
@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import rapido.bike.paathshaala.instagrammvvmarchitecture.R
 import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity.MainActivity
+import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.LocationTracker
 
 class LocationTrackingService : Service() {
     private val channelId = "Location Service"
