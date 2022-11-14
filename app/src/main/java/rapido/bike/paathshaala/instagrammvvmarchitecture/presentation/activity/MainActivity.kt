@@ -28,7 +28,6 @@ class MainActivity : DaggerAppCompatActivity() {
     private lateinit var feedAdapter: PostFeedAdapter
     private lateinit var storyAdapter: StoryAdapter
     private lateinit var viewModel: HomePageViewModel
-//    private  val viewModel1: FeedViewModel ?= null
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory

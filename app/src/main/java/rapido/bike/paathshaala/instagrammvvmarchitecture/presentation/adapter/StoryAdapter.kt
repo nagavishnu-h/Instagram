@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import rapido.bike.paathshaala.instagrammvvmarchitecture.R
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.StoryCard
 
@@ -18,7 +18,7 @@ class StoryAdapter(private val stories: List<StoryCard>): RecyclerView.Adapter<S
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         val story = stories[position]
-        Picasso.get().load(story.userPicture).into(holder.profilePicture)
+        Glide.with(holder.profilePicture.context).load(story.userPicture).into(holder.profilePicture)
     }
 
     override fun getItemCount(): Int {

@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import rapido.bike.paathshaala.instagrammvvmarchitecture.R
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
 
@@ -20,8 +20,8 @@ class PostFeedAdapter(private val posts: List<PostCard>): Adapter<PostFeedAdapte
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post = posts[position]
-        Picasso.get().load(post.userPicture).into(holder.profilePicture)
-        Picasso.get().load(post.postPicture).into(holder.postPictures)
+        Glide.with(holder.profilePicture.context).load(post.userPicture).into(holder.profilePicture)
+        Glide.with(holder.postPictures.context).load(post.postPicture).into(holder.postPictures)
         holder.userName.text = post.title
         holder.likeCount.text = holder.likeCount.context.resources.getString(R.string.likes, post.likeCount.toString())
         holder.postDescription.text = holder.postDescription.context.resources.getString(R.string.description, post.title, post.postDescription)
