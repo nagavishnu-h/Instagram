@@ -3,25 +3,32 @@ package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerAppCompatActivity
 import rapido.bike.paathshaala.instagrammvvmarchitecture.databinding.ActivityMainBinding
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.ViewModelFactory
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
+import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.StoryCard
+import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity.Permission.hide
+import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity.Permission.show
 import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.adapter.PostFeedAdapter
-import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.viewmodel.FeedViewModel
+import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.adapter.StoryAdapter
+import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.viewmodel.HomePageViewModel
 import rapido.bike.paathshaala.instagrammvvmarchitecture.service.LocationTrackingService
 import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
+    private var locationTrackingService: LocationTrackingService ?= null
     private lateinit var binding: ActivityMainBinding
     private lateinit var feedAdapter: PostFeedAdapter
-    private lateinit var viewModel: FeedViewModel
+    private lateinit var storyAdapter: StoryAdapter
+    private lateinit var viewModel: HomePageViewModel
+//    private  val viewModel1: FeedViewModel ?= null
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -30,9 +37,9 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        getAddress(12.9100183, 77.6990233)
         validateAndStartService()
         initViewModel()
-        setUpUI()
         setUpObservers()
     }
 
@@ -40,48 +47,49 @@ class MainActivity : DaggerAppCompatActivity() {
         if(checkPermissions()){
             startService(Intent(this, LocationTrackingService::class.java))
         }else{
-            requestPermissions()
+            Permission.requestPermissions(this)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        stopService(Intent(this, LocationTrackingService::class.java))
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this, viewModelFactory)[FeedViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[HomePageViewModel::class.java]
     }
 
     private fun setUpObservers() {
-        viewModel.getFeeds().observe(this) {
-            when (it) {
+        viewModel.getFeeds().observe(this) { feedResponse->
+            when (feedResponse) {
                 is Resource.Success -> {
-                    binding.recyclerView.visibility = View.VISIBLE
-                    binding.progressBar.visibility = View.GONE
-                    retrieveList(it.data)
+                    viewModel.getStories().observe(this){ storyResponse ->
+                        when(storyResponse) {
+                            is Resource.Success -> {
+                                binding.recyclerViewFeed.show()
+                                binding.progressBar.hide()
+                                setUpUI(feedResponse.data, storyResponse.data)
+                            }
+                            is Resource.Failure -> {
+                                binding.progressBar.show()
+                            }
+                            is Resource.Loading -> {
+                                binding.progressBar.show()
+                            }
+                        }
+                    }
                 }
                 is Resource.Failure -> {
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressBar.show()
                 }
                 is Resource.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressBar.show()
                 }
             }
-
         }
     }
 
-    private fun setUpUI() {
-        feedAdapter = PostFeedAdapter(this)
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(applicationContext)
-            adapter = feedAdapter
-        }
-    }
-
-    private fun retrieveList(feeds: List<PostCard>) {
-        feedAdapter.setPosts(feeds)
+    private fun setUpUI(posts: List<PostCard>, stories: List<StoryCard>) {
+        feedAdapter = PostFeedAdapter(posts)
+        storyAdapter = StoryAdapter(stories)
+        binding.recyclerViewFeed.adapter = feedAdapter
+        binding.recyclerViewStory.adapter = storyAdapter
     }
 
     private fun checkPermissions(): Boolean {
@@ -99,12 +107,14 @@ class MainActivity : DaggerAppCompatActivity() {
         return false
     }
 
-    private fun requestPermissions() {
-        val permissionId = 42
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
-            permissionId
-        )
+    override fun onDestroy() {
+        super.onDestroy()
+        locationTrackingService = null
+    }
+
+    private fun getAddress(lat: Double, lng: Double){
+        val geocoder = Geocoder(this)
+        val list = geocoder.getFromLocation(lat, lng, 1)
+        Log.d("Locality", list[0].locality)
     }
 }

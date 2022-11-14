@@ -1,33 +1,34 @@
+@file:Suppress("UNREACHABLE_CODE")
+
 package rapido.bike.paathshaala.instagrammvvmarchitecture.utils
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
-import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
-import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity.MainActivity
+import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity.Permission
 
 object LocationTracker {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    var latitude: String = ""
-    var longitude: String = ""
+    private var latitude:Double?=null
+    private var longitude:Double?=null
 
     @SuppressLint("MissingPermission")
     fun getLastLocation(applicationContext: Context) {
+        Permission.requestPermissions(applicationContext)
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(applicationContext)
         if (isLocationEnabled(applicationContext)) {
             fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
                 if (task.isSuccessful && task.result != null) {
                     Log.d("Instagram LastLocation:", task.result.toString())
-                    latitude = task.result.latitude.toString()
-                    longitude = task.result.longitude.toString()
+                    latitude = task.result.latitude
+                    longitude = task.result.longitude
                 } else {
                     Log.w("Instagram", "Failed to get location.")
                 }
@@ -42,7 +43,7 @@ object LocationTracker {
     @SuppressLint("MissingPermission")
     fun createLocationRequest(applicationContext: Context) {
         val locationRequest = LocationRequest()
-        locationRequest.interval = 5
+        locationRequest.interval = 5000
         locationRequest.priority = Priority.PRIORITY_HIGH_ACCURACY
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(applicationContext)
@@ -55,8 +56,8 @@ object LocationTracker {
     private val locationCallBack = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             locationResult.lastLocation?.let {
-                latitude = it.latitude.toString()
-                longitude = it.longitude.toString()
+                latitude = it.latitude
+                longitude = it.longitude
                 Log.d(
                     "Instagram",
                     "locationCallBack: Latitude ${it.latitude} and Longitude ${it.longitude}"
@@ -74,9 +75,5 @@ object LocationTracker {
                 )
     }
 
-
-    fun stopLocationUpdates() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallBack)
-    }
 
 }
