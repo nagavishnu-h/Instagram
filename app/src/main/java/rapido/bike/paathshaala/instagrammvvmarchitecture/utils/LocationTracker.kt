@@ -5,13 +5,11 @@ package rapido.bike.paathshaala.instagrammvvmarchitecture.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import com.google.android.gms.location.*
-import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity.Permission
 
 object LocationTracker {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
