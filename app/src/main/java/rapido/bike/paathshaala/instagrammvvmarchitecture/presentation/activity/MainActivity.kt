@@ -13,12 +13,12 @@ import rapido.bike.paathshaala.instagrammvvmarchitecture.databinding.ActivityMai
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.ViewModelFactory
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.StoryCard
-import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Permission.hide
-import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Permission.show
 import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.adapter.PostFeedAdapter
 import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.adapter.StoryAdapter
 import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.viewmodel.HomePageViewModel
 import rapido.bike.paathshaala.instagrammvvmarchitecture.service.LocationTrackingService
+import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Extensions.hide
+import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Extensions.show
 import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Permission
 import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
 import javax.inject.Inject

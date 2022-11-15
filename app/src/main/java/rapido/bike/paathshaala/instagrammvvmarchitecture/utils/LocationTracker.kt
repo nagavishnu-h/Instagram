@@ -13,8 +13,8 @@ import com.google.android.gms.location.*
 
 object LocationTracker {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private var latitude:Double?=null
-    private var longitude:Double?=null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
     @SuppressLint("MissingPermission")
     fun getLastLocation(applicationContext: Context) {
@@ -46,8 +46,7 @@ object LocationTracker {
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(applicationContext)
         fusedLocationProviderClient.requestLocationUpdates(
-            locationRequest,
-            locationCallBack, Looper.getMainLooper()
+            locationRequest, locationCallBack, Looper.getMainLooper()
         )
     }
 
@@ -67,11 +66,8 @@ object LocationTracker {
     private fun isLocationEnabled(applicationContext: Context): Boolean {
         val locationManager: LocationManager =
             applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                locationManager.isProviderEnabled(
-                    LocationManager.NETWORK_PROVIDER
-                )
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
     }
-
-
 }
