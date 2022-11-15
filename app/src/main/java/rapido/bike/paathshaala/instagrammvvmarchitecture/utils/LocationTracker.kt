@@ -5,11 +5,17 @@ package rapido.bike.paathshaala.instagrammvvmarchitecture.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
+import rapido.bike.paathshaala.instagrammvvmarchitecture.Constants.LOCALITY
+import rapido.bike.paathshaala.instagrammvvmarchitecture.Constants.LOCATION_TAG
+import rapido.bike.paathshaala.instagrammvvmarchitecture.InstagramApplication
+import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity.MainActivity
 
 object LocationTracker {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -53,12 +59,11 @@ object LocationTracker {
     private val locationCallBack = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             locationResult.lastLocation?.let {
-                latitude = it.latitude
-                longitude = it.longitude
-                Log.d(
-                    "Instagram",
-                    "locationCallBack: Latitude ${it.latitude} and Longitude ${it.longitude}"
-                )
+                val locality = getAddress(it.latitude, it.longitude)
+                val intent = Intent("com.instagram.LOCATION_UPDATES")
+                intent.putExtra("Locality", locality)
+                LocalBroadcastManager.getInstance(InstagramApplication.applicationContext())
+                    .sendBroadcast(Intent(LOCATION_TAG).putExtra(LOCALITY,locality))
             }
         }
     }
@@ -69,5 +74,11 @@ object LocationTracker {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
         )
+    }
+
+    private fun getAddress(lat: Double, lng: Double): String {
+        val geocoder = Geocoder(InstagramApplication.applicationContext())
+        val list = geocoder.getFromLocation(lat, lng, 1)
+        return list[0].locality
     }
 }

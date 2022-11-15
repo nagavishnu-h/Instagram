@@ -1,14 +1,20 @@
 package rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import dagger.android.support.DaggerAppCompatActivity
+import rapido.bike.paathshaala.instagrammvvmarchitecture.Constants.LOCALITY
+import rapido.bike.paathshaala.instagrammvvmarchitecture.Constants.LOCATION_TAG
+import rapido.bike.paathshaala.instagrammvvmarchitecture.InstagramApplication
 import rapido.bike.paathshaala.instagrammvvmarchitecture.databinding.ActivityMainBinding
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.ViewModelFactory
 import rapido.bike.paathshaala.instagrammvvmarchitecture.domain.model.PostCard
@@ -24,11 +30,11 @@ import rapido.bike.paathshaala.instagrammvvmarchitecture.utils.Resource
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
-    private var locationTrackingService: LocationTrackingService ?= null
     private lateinit var binding: ActivityMainBinding
     private lateinit var feedAdapter: PostFeedAdapter
     private lateinit var storyAdapter: StoryAdapter
     private lateinit var viewModel: HomePageViewModel
+    private var locationReceiver: BroadcastReceiver? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -37,16 +43,36 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        getAddress(12.9100183, 77.6990233)
         validateAndStartService()
         initViewModel()
         setUpObservers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        startBroadcast()
+    }
+
+    private fun startBroadcast() {
+        locationReceiver = object : BroadcastReceiver() {
+            override fun onReceive(p0: Context?, p1: Intent?) {
+                p1?.getStringExtra(LOCALITY)?.let { updateUI(it) }
+            }
+        }
+        LocalBroadcastManager.getInstance(InstagramApplication.applicationContext())
+            .registerReceiver(
+                locationReceiver as BroadcastReceiver, IntentFilter(LOCATION_TAG)
+            )
+    }
+
+    private fun updateUI(location: String) {
+        binding.locality.text = location
+    }
+
     private fun validateAndStartService() {
-        if(checkPermissions()){
+        if (checkPermissions()) {
             startService(Intent(this, LocationTrackingService::class.java))
-        }else{
+        } else {
             Permission.requestPermissions(this)
         }
     }
@@ -56,11 +82,11 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun setUpObservers() {
-        viewModel.getFeeds().observe(this) { feedResponse->
+        viewModel.getFeeds().observe(this) { feedResponse ->
             when (feedResponse) {
                 is Resource.Success -> {
-                    viewModel.getStories().observe(this){ storyResponse ->
-                        when(storyResponse) {
+                    viewModel.getStories().observe(this) { storyResponse ->
+                        when (storyResponse) {
                             is Resource.Success -> {
                                 binding.recyclerViewFeed.show()
                                 binding.progressBar.hide()
@@ -107,14 +133,14 @@ class MainActivity : DaggerAppCompatActivity() {
         return false
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        locationTrackingService = null
-    }
-
-    private fun getAddress(lat: Double, lng: Double){
-        val geocoder = Geocoder(this)
-        val list = geocoder.getFromLocation(lat, lng, 1)
-        Log.d("Locality", list[0].locality)
+    override fun onPause() {
+        super.onPause()
+        locationReceiver?.let {
+            LocalBroadcastManager.getInstance(InstagramApplication.applicationContext())
+                .unregisterReceiver(
+                    it
+                )
+        }
+        locationReceiver = null
     }
 }
