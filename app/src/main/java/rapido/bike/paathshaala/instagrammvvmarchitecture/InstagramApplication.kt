@@ -1,30 +1,22 @@
 package rapido.bike.paathshaala.instagrammvvmarchitecture
 
-import android.app.Application
+import android.content.Context
 import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import rapido.bike.paathshaala.instagrammvvmarchitecture.di.component.AppComponent
+import dagger.android.support.DaggerApplication
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.component.DaggerAppComponent
-import javax.inject.Inject
 
-
-class InstagramApplication : Application(), HasAndroidInjector {
-    private lateinit var appComponent : AppComponent
-
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
-    override fun onCreate() {
-        super.onCreate()
-        initDagger()
+class InstagramApplication : DaggerApplication() {
+    init {
+        instance = this
+    }
+    companion object {
+        private var instance: InstagramApplication? = null
+        fun applicationContext() : Context {
+            return instance!!.applicationContext
+        }
     }
 
-    private fun initDagger(){
-        appComponent = DaggerAppComponent.builder().application(this).build()
-        appComponent.inject(this)
-    }
-
-    override fun androidInjector(): AndroidInjector<Any> {
-        return androidInjector
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().application(this).build()
     }
 }

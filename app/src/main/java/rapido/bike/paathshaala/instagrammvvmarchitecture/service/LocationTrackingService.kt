@@ -1,6 +1,7 @@
 package rapido.bike.paathshaala.instagrammvvmarchitecture.service
 
 import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
@@ -15,7 +16,6 @@ class LocationTrackingService : Service() {
     override fun onCreate() {
         super.onCreate()
         LocationTracker.createLocationRequest(applicationContext)
-        LocationTracker.getLastLocation(applicationContext)
         if (Build.VERSION.SDK_INT >= 26) {
             val channel =
                 NotificationChannel(
@@ -32,6 +32,11 @@ class LocationTrackingService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        runAsForeground()
+        return START_STICKY
+    }
+
+    private fun runAsForeground() {
         val pendingIntent: PendingIntent =
             Intent(this, MainActivity::class.java).let { notificationIntent ->
                 PendingIntent.getActivity(
@@ -53,12 +58,6 @@ class LocationTrackingService : Service() {
             .build()
 
         startForeground(1, notification)
-        return START_STICKY
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        LocationTracker.stopLocationUpdates()
     }
 
     override fun onBind(p0: Intent?): IBinder? {

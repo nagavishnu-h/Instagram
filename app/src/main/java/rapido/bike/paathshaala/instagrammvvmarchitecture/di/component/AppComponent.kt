@@ -4,16 +4,16 @@ import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
 import rapido.bike.paathshaala.instagrammvvmarchitecture.InstagramApplication
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.module.ActivityBuilderModule
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.module.NetworkModule
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.module.ViewModelModule
-import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.activity.MainActivity
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [NetworkModule::class, ViewModelModule::class, ActivityBuilderModule::class, AndroidInjectionModule::class])
-interface AppComponent {
+interface AppComponent : AndroidInjector<InstagramApplication>{
 
     @Component.Builder
     interface Builder {
@@ -21,6 +21,4 @@ interface AppComponent {
         fun application(application: Application) : Builder
         fun build(): AppComponent
     }
-
-    fun inject(instagramApplication: InstagramApplication)
 }

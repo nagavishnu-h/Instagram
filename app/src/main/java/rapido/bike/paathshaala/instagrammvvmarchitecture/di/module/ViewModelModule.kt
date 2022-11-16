@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.ViewModelFactory
 import rapido.bike.paathshaala.instagrammvvmarchitecture.di.ViewModelKey
-import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.viewmodel.FeedViewModel
+import rapido.bike.paathshaala.instagrammvvmarchitecture.presentation.viewmodel.HomePageViewModel
 
 @Module
 abstract class ViewModelModule {
@@ -16,6 +16,6 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(FeedViewModel::class)
-    abstract fun bindsOnGoingOrderViewModel(feedViewModel: FeedViewModel): ViewModel
+    @ViewModelKey(HomePageViewModel::class)
+    abstract fun bindsOnGoingOrderViewModel(homePageViewModel: HomePageViewModel): ViewModel
 }

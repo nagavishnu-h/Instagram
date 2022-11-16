@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import rapido.bike.paathshaala.instagrammvvmarchitecture.Constants.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -29,8 +30,4 @@ class NetworkModule {
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
-
-    companion object {
-        private const val BASE_URL = "http://172.16.17.174:3000/"
-    }
 }
