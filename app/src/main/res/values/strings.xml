@@ -5,4 +5,5 @@
     <string name="notification_title">User Location</string>
     <string name="notification_message">Fetching Location Details ……</string>
     <string name="instagram">Instagram</string>
+    <string name="from">from</string>
 </resources>

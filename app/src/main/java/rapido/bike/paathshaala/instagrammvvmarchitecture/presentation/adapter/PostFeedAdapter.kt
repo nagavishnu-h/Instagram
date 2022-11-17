@@ -33,9 +33,9 @@ class PostFeedAdapter(private val posts: List<PostCard>): Adapter<PostFeedAdapte
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val profilePicture: ImageView = itemView.findViewById(R.id.user_picture)
-        val userName: TextView = itemView.findViewById(R.id.userName)
-        val postPictures: ImageView = itemView.findViewById(R.id.userPostPics)
-        val likeCount:TextView = itemView.findViewById(R.id.likeCount)
-        val postDescription:TextView = itemView.findViewById(R.id.postDescription)
+        val userName: TextView = itemView.findViewById(R.id.username)
+        val postPictures: ImageView = itemView.findViewById(R.id.user_post_pics)
+        val likeCount:TextView = itemView.findViewById(R.id.like_count)
+        val postDescription:TextView = itemView.findViewById(R.id.post_description)
     }
 }
