@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">InstagramMvvmArchitecture</string>
+    <string name="app_name">Instagram</string>
     <string name="likes">%s likes</string>
     <string name="description">%s %s</string>
     <string name="notification_title">User Location</string>
     <string name="notification_message">Fetching Location Details ……</string>
+    <string name="instagram">Instagram</string>
+    <string name="from">from</string>
 </resources>
